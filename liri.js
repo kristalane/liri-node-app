@@ -27,7 +27,7 @@ function viewTweets() {
   client.get('statuses/user_timeline', params, function(error, tweets, response) {
     if (!error) {
       for (var i=0; i < tweets.length; i++) {
-        console.log("tweet text:" + tweets[i].text);
+        console.log(tweets[i].created_at + ": " + tweets[i].text);
       };
     };
   });
@@ -41,21 +41,21 @@ function spotifySong() {
   spotify.search({
     type: 'track',
     query: songName,
-    limit: 1},
+    limit: 3},
     function(err, data) {
-    if (err) {
-      return console.log('Error occurred: ' + err);
-    }
+      if (err) {
+        return console.log('Error occurred: ' + err);
+      }
     // first item
-    var item = data.tracks.items[0];
-    console.log(
-      "\n* Artist(s): " + item.artists[0].name
-      + "\n* Title: " + item.name
-      + "\n* Preview Link: " + item.preview_url
-      + "\n* Album: " + item.album.name
-    );
+      data.tracks.items.forEach(function(item) {
+        console.log(
+          "\n* Artist(s): " + item.artists[0].name
+          + "\n* Title: " + item.name
+          + "\n* Preview Link: " + item.preview_url
+          + "\n* Album: " + item.album.name);
+      });
   });
-};
+}
 
 function movies() {
   var movieName = process.argv.slice(3).join(" ");
@@ -65,18 +65,19 @@ function movies() {
     var dataBody = JSON.parse(body);
     if (movieName === "") {
       return console.log(
-        "\n* If you haven't watched 'Mr. Nobody,' you should: " + "http://www.imdb.com/title/tt0485947/" +
-        "\n* It's on Netflix!");
+        "\n* If you haven't watched 'Mr. Nobody,' you should: "
+        + "http://www.imdb.com/title/tt0485947/"
+        + "\n* It's on Netflix!");
     };
     if (!error && response.statusCode === 200) {
-      console.log("\n* Title: " + dataBody.Title +
-      "\n* Year: " + dataBody.Year +
-      "\n* IMDB Rating: " + dataBody.Ratings[0].Value +
-      "\n* Rotten Tomatoes Rating: " + dataBody.Ratings[1].Value +
-      "\n* Country produced: " + dataBody.Country +
-      "\n* Language: " + dataBody.Language +
-      "\n* Plot:" + dataBody.Plot +
-      "\n* Actors:" + dataBody.Actors);
+      console.log("\n* Title: " + dataBody.Title
+      + "\n* Year: " + dataBody.Year
+      + "\n* IMDB Rating: " + dataBody.Ratings[0].Value
+      + "\n* Rotten Tomatoes Rating: " + dataBody.Ratings[1].Value
+      + "\n* Country produced: " + dataBody.Country
+      + "\n* Language: " + dataBody.Language
+      + "\n* Plot:" + dataBody.Plot
+      + "\n* Actors:" + dataBody.Actors);
     };
   });
 };
