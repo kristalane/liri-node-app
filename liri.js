@@ -63,6 +63,11 @@ function movies() {
 
   request(queryUrl, function(error, response, body){
     var dataBody = JSON.parse(body);
+    if (movieName === "") {
+      return console.log(
+        "\n* If you haven't watched 'Mr. Nobody,' you should: " + "http://www.imdb.com/title/tt0485947/" +
+        "\n* It's on Netflix!");
+    };
     if (!error && response.statusCode === 200) {
       console.log("\n* Title: " + dataBody.Title +
       "\n* Year: " + dataBody.Year +
@@ -72,11 +77,6 @@ function movies() {
       "\n* Language: " + dataBody.Language +
       "\n* Plot:" + dataBody.Plot +
       "\n* Actors:" + dataBody.Actors);
-    };
-    if (movieName === "") {
-      console.log(
-        "\n* If you haven't watched 'Mr. Nobody,' you should: " + "http://www.imdb.com/title/tt0485947/" +
-        "\n* It's on Netflix!");
     };
   });
 };
