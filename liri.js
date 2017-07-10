@@ -5,19 +5,19 @@ var client = new tweet(keys.twitterKeys);
 var song = require("node-spotify-api");
 var spotify = new song(keys.spotifyKeys);
 var request = require("request");
-var userInput = process.argv[2];
+var command = process.argv[2];
 
 // set the conditions for inputs that trigger functions
-if (userInput === "my-tweets"){
+if (command === "my-tweets"){
   viewTweets();
 };
-if (userInput === "spotify-this-song") {
+if (command === "spotify-this-song") {
   spotifySong();
 };
-if (userInput === "movie-this") {
+if (command === "movie-this") {
   movies();
 };
-if (userInput === "do-what-it-says") {
+if (command === "do-what-it-says") {
   doSays();
 };
 
@@ -90,3 +90,15 @@ function doSays() {
     console.log(data);
   });
 };
+
+// bonus: logging our commands
+fs.appendFile("./log.txt", command, function(err) {
+
+  if (err) {
+    return console.log(err);
+  }
+  // If no error is experienced, we'll log the phrase "Content Added" to our node console.
+  else {
+    console.log("Command Logged!");
+  }
+});
